@@ -310,10 +310,24 @@ body {
     overflow: hidden;
 }
 
+.demo-placeholder {
+    cursor: crosshair;
+    user-select: none;
+}
+
 .demo-placeholder svg {
     width: 100%;
     height: auto;
     display: block;
+}
+
+.demo-status {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary);
+    min-height: 20px;
 }
 
 .scratch-line {

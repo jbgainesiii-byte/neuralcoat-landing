@@ -73,3 +73,65 @@ window.addEventListener('scroll', () => {
     
     lastScroll = currentScroll;
 });
+
+// Interactive paint demo
+const paintDemo = document.getElementById('paintDemo');
+const scratchesGroup = document.getElementById('scratches');
+const demoStatus = document.getElementById('demoStatus');
+let scratchCount = 0;
+
+if (paintDemo) {
+    paintDemo.addEventListener('click', (e) => {
+        const svg = paintDemo.querySelector('svg');
+        const rect = svg.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 200;
+        const y = ((e.clientY - rect.top) / rect.height) * 200;
+        
+        // Create scratch
+        const scratchId = `scratch-${++scratchCount}`;
+        const angle = Math.random() * 360;
+        const length = 30 + Math.random() * 30;
+        const x1 = x - Math.cos(angle * Math.PI / 180) * length / 2;
+        const y1 = y - Math.sin(angle * Math.PI / 180) * length / 2;
+        const x2 = x + Math.cos(angle * Math.PI / 180) * length / 2;
+        const y2 = y + Math.sin(angle * Math.PI / 180) * length / 2;
+        
+        const scratch = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        scratch.setAttribute('id', scratchId);
+        scratch.setAttribute('x1', x1);
+        scratch.setAttribute('y1', y1);
+        scratch.setAttribute('x2', x2);
+        scratch.setAttribute('y2', y2);
+        scratch.setAttribute('stroke', 'white');
+        scratch.setAttribute('stroke-width', '3');
+        scratch.setAttribute('stroke-linecap', 'round');
+        scratch.setAttribute('opacity', '0.8');
+        
+        scratchesGroup.appendChild(scratch);
+        
+        // Update status
+        demoStatus.textContent = 'Healing in progress...';
+        demoStatus.style.color = '#f59e0b';
+        
+        // Animate healing
+        setTimeout(() => {
+            scratch.style.transition = 'opacity 2s ease-out, stroke-width 2s ease-out';
+            scratch.style.opacity = '0';
+            scratch.style.strokeWidth = '0';
+            
+            setTimeout(() => {
+                scratch.remove();
+                const remaining = scratchesGroup.children.length;
+                if (remaining === 0) {
+                    demoStatus.textContent = '✓ Fully healed! Click to scratch again';
+                    demoStatus.style.color = '#10b981';
+                    
+                    setTimeout(() => {
+                        demoStatus.textContent = 'Click anywhere to scratch';
+                        demoStatus.style.color = '#667eea';
+                    }, 2000);
+                }
+            }, 2000);
+        }, 500);
+    });
+}
