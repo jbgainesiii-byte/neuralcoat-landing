@@ -75,13 +75,14 @@ window.addEventListener('scroll', () => {
 });
 
 // Interactive paint demo
-const paintDemo = document.getElementById('paintDemo');
-const scratchesGroup = document.getElementById('scratches');
-const demoStatus = document.getElementById('demoStatus');
-let scratchCount = 0;
+document.addEventListener('DOMContentLoaded', () => {
+    const paintDemo = document.getElementById('paintDemo');
+    const scratchesGroup = document.getElementById('scratches');
+    const demoStatus = document.getElementById('demoStatus');
+    let scratchCount = 0;
 
-if (paintDemo) {
-    paintDemo.addEventListener('click', (e) => {
+    if (paintDemo && scratchesGroup && demoStatus) {
+        paintDemo.addEventListener('click', (e) => {
         const svg = paintDemo.querySelector('svg');
         const rect = svg.getBoundingClientRect();
         const x = ((e.clientX - rect.left) / rect.width) * 200;
@@ -133,5 +134,6 @@ if (paintDemo) {
                 }
             }, 2000);
         }, 500);
-    });
-}
+        });
+    }
+});
